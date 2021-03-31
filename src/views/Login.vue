@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex align-center justify-center" style="height: 100%">
+  <v-container class="d-flex align-center justify-center">
     <v-card
       class="d-flex align-center justify-space-around"
       elevation="7"
@@ -14,7 +14,7 @@
         height="100%"
       >
         <div class="text-h4 text-uppercase text-center">Login</div>
-        <v-form v-model="valid">
+        <v-form>
           <v-text-field
             v-model="username"
             type="text"
@@ -25,11 +25,14 @@
             v-model="password"
             type="password"
             label="Password"
+            append-icon="mdi-eye"
             required
           />
         </v-form>
         <v-btn class="button" width="fit-content">Login</v-btn>
-        <v-btn class="button" width="fit-content">Create New Account</v-btn>
+        <v-btn class="button" width="fit-content" @click="registerBtnClick"
+          >Create New Account</v-btn
+        >
       </v-card>
     </v-card>
   </v-container>
@@ -38,10 +41,14 @@
 export default {
   data() {
     return {
-      valid: false,
       username: "",
       password: "",
     };
+  },
+  methods: {
+    registerBtnClick() {
+      this.$router.push({ name: "Register" });
+    },
   },
 };
 </script>
