@@ -14,13 +14,14 @@
         height="100%"
       >
         <div class="text-h4 text-uppercase text-center">Register</div>
-        <v-form>
+        <v-form ref="form">
           <v-text-field
             v-model="username"
             type="text"
             label="Username"
+            @keyup.enter="createBtn"
             :rules="[rules.required]"
-            ref="username"
+            :error-messages="valid ? '' : 'Username existed!'"
             @blur="checkUsername()"
           />
           <v-text-field
@@ -28,6 +29,7 @@
             label="Password"
             :append-icon="eye ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="toggleEye"
+            @keyup.enter="createBtn"
             :type="!eye ? 'text' : 'password'"
             hint="At least 8 characters"
             :rules="[rules.required, rules.min]"
@@ -39,20 +41,21 @@
             label="Confirm password"
             :append-icon="eye ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="toggleEye"
+            @keyup.enter="createBtn"
             :type="!eye ? 'text' : 'password'"
             hint="At least 8 characters"
-            :rules="[rules.required, rules.min]"
+            :rules="[
+              rules.required,
+              rules.min,
+              rules.matching(password, cfpassword),
+            ]"
             counter
             ref="cfpassword"
             validate-on-blur
           />
         </v-form>
-        <v-btn class="button" width="fit-content" @click="createBtnClick"
-          >Create</v-btn
-        >
-        <v-btn class="button" width="fit-content" @click="backBtnClick"
-          >Back</v-btn
-        >
+        <v-btn width="fit-content" @click="createBtn">Create</v-btn>
+        <v-btn width="fit-content" @click="backBtn">Back</v-btn>
       </v-card>
     </v-card>
   </v-container>
@@ -66,41 +69,38 @@ export default {
       password: "",
       cfpassword: "",
       eye: true,
+      valid: true,
       rules: {
         required: (value) => !!value || "Required!",
-        min: (value) => value.length >= 8 || "Min 8 characters",
+        min: (value) => (value || "").length >= 8 || "Min 8 characters!",
+        matching: (value1, value2) =>
+          value1 === value2 || "Password not match!",
       },
     };
   },
   methods: {
-    createBtnClick() {
-      if (this.password !== this.cfpassword) {
-        alert("Password not match!");
-        this.cfpassword = "";
-        this.$refs.cfpassword.focus();
-      } else {
-        let user = new User(this.username, this.password);
+    createBtn() {
+      if (this.$refs.form.validate()) {
+        let user = new User(this.username, this.password, []);
         this.$store.commit("addNewUser", user);
         this.$store.commit("setActiveUser", user);
         this.$store.commit("saveData");
-        this.username = "";
-        this.password = "";
-        this.cfpassword = "";
+        this.$refs.form.reset();
+        this.$refs.form.resetValidation();
+        this.$router.push({ name: "Main" });
       }
     },
     checkUsername() {
       let users = this.$store.state.users;
-      let usernames = users.map((i) => i.username);
+      let usernames = users.map((user) => user.username);
       if (usernames.includes(this.username)) {
-        alert("Username existed!");
-        this.username = "";
-        this.$refs.username.focus();
+        this.valid = false;
       }
     },
     toggleEye() {
       this.eye = !this.eye;
     },
-    backBtnClick() {
+    backBtn() {
       this.$router.push({ name: "Login" });
     },
   },

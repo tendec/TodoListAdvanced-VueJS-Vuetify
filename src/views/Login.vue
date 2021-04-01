@@ -14,23 +14,31 @@
         height="100%"
       >
         <div class="text-h4 text-uppercase text-center">Login</div>
-        <v-form>
+        <v-form ref="form">
           <v-text-field
             v-model="username"
             type="text"
             label="Username"
-            required
+            @keyup.enter="loginBtn"
+            :rules="[rules.required]"
+            :error-messages="valid ? '' : 'Username or Password incorrect!'"
           />
           <v-text-field
             v-model="password"
-            type="password"
             label="Password"
-            append-icon="mdi-eye"
-            required
+            :append-icon="eye ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="toggleEye"
+            @keyup.enter="loginBtn"
+            :type="!eye ? 'text' : 'password'"
+            hint="At least 8 characters"
+            :rules="[rules.required, rules.min]"
+            :error-messages="valid ? '' : 'Username or Password incorrect!'"
+            counter
+            validate-on-blur
           />
         </v-form>
-        <v-btn class="button" width="fit-content">Login</v-btn>
-        <v-btn class="button" width="fit-content" @click="registerBtnClick"
+        <v-btn width="fit-content" @click="loginBtn">Login</v-btn>
+        <v-btn width="fit-content" @click="registerBtn"
           >Create New Account</v-btn
         >
       </v-card>
@@ -43,10 +51,40 @@ export default {
     return {
       username: "",
       password: "",
+      eye: true,
+      valid: true,
+      rules: {
+        required: (value) => !!value || "Required!",
+        min: (value) => (value || "").length >= 8 || "Min 8 characters",
+      },
     };
   },
   methods: {
-    registerBtnClick() {
+    loginBtn() {
+      if (this.$refs.form.validate()) {
+        let users = this.$store.state.users;
+        let usernames = users.map((user) => user.username);
+        let index = usernames.indexOf(this.username);
+        let passwords = users.map((user) => user.password);
+        if (index == -1) {
+          this.valid = false;
+        } else {
+          if (passwords[index] !== this.password) {
+            this.valid = false;
+          } else {
+            this.$store.commit("setActiveUser", users[index]);
+            this.$store.commit("saveData");
+            this.$refs.form.reset();
+            this.$refs.form.resetValidation();
+            this.$router.push({ name: "Main" });
+          }
+        }
+      }
+    },
+    toggleEye() {
+      this.eye = !this.eye;
+    },
+    registerBtn() {
       this.$router.push({ name: "Register" });
     },
   },

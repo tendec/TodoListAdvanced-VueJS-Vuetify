@@ -8,15 +8,54 @@
     >
       <div class="text-h4 text-capitalize text-center">Todos</div>
       <v-card
-        class="d-flex align-center justify-space-around"
+        class="d-flex flex-column align-center justify-space-around"
         flat
-        width="300px"
+        width="100%"
         height="fit-content"
       >
-        <v-btn class="button" width="fit-content">+</v-btn>
-        <v-btn class="button" width="fit-content">-</v-btn>
-        <v-btn class="button" width="fit-content">Logout</v-btn>
+        <v-card class="d-flex flex-wrap">
+          <card v-for="(card, index) in cards" :key="index" :data="card" />
+        </v-card>
+        <v-btn class="button" width="fit-content" @click="addNewCard">+</v-btn>
+        <v-btn class="button" width="fit-content" @click="removeAllCards"
+          >-</v-btn
+        >
       </v-card>
+      <v-btn class="button" width="fit-content" @click="logoutBtn"
+        >Logout</v-btn
+      >
     </v-card>
   </v-container>
 </template>
+
+<script>
+import Card from "../components/Card.vue";
+export default {
+  data() {
+    return {};
+  },
+  components: {
+    Card,
+  },
+  computed: {
+    cards() {
+      return this.$store.state.activeUser.cards;
+    },
+  },
+  methods: {
+    addNewCard() {
+      this.$store.commit("addNewCard");
+      this.$store.commit("saveData");
+    },
+    removeAllCards() {
+      this.$store.commit("removeAllCards");
+      this.$store.commit("saveData");
+    },
+    logoutBtn() {
+      this.$store.state.activeUser = null;
+      this.$store.commit("saveData");
+      this.$router.push({ name: "Login" });
+    },
+  },
+};
+</script>

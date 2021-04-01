@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import User from "../assets/class/user.js";
+import Card from "../assets/class/card.js";
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
         for (let i = 0; i < stateData.users.length; i++) {
           let user = new User(
             stateData.users[i].username,
-            stateData.users[i].password
+            stateData.users[i].password,
+            stateData.users[i].cards
           );
           state.users.push(user);
           if (stateData.activeUser !== null) {
@@ -41,6 +43,13 @@ export default new Vuex.Store({
     },
     setActiveUser(state, user) {
       state.activeUser = user;
+    },
+    addNewCard(state) {
+      let card = new Card("", []);
+      state.activeUser.cards.push(card);
+    },
+    removeAllCards(state) {
+      state.activeUser.cards.splice(0, state.activeUser.cards.length);
     },
   },
   actions: {},
