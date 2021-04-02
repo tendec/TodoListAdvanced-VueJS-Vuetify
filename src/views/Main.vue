@@ -13,14 +13,15 @@
         width="100%"
         height="fit-content"
       >
-        <v-card class="d-flex flex-wrap">
+        <v-card class="d-flex flex-wrap" flat>
           <card v-for="(card, index) in cards" :key="index" :data="card" />
         </v-card>
-        <v-btn class="button" width="fit-content" @click="addNewCard">+</v-btn>
-        <v-btn class="button" width="fit-content" @click="removeAllCards"
-          >-</v-btn
-        >
       </v-card>
+      <v-btn class="button" width="fit-content" @click="addNewCard">+</v-btn>
+      <v-btn class="button" width="fit-content" @click="removeAllCards"
+        >-</v-btn
+      >
+      <v-card>Username: {{ info }}</v-card>
       <v-btn class="button" width="fit-content" @click="logoutBtn"
         >Logout</v-btn
       >
@@ -32,7 +33,9 @@
 import Card from "../components/Card.vue";
 export default {
   data() {
-    return {};
+    return {
+      info: this.$store.state.activeUser.username,
+    };
   },
   components: {
     Card,

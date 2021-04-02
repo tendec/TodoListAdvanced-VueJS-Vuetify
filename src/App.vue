@@ -14,6 +14,9 @@ export default {
 
   created() {
     this.$store.commit("loadData");
+    if (this.$store.state.activeUser !== null) {
+      this.$router.push({ name: "Main" });
+    }
   },
 };
 </script>
