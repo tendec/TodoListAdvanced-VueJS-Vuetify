@@ -1,19 +1,22 @@
 <template>
   <v-card
-    class="d-flex flex-column align-center justify-space-between mr-4"
+    class="d-flex flex-column align-center justify-space-between ma-2"
     width="300px"
     height="350px"
   >
     <v-card class="d-flex align-center" flat>
       <v-card-title
         ><v-text-field
-          class="text-uppercase text-center"
+          class="input-title"
           v-model="data.title"
           type="text"
           placeholder="title"
+          :rules="[rules.required]"
         ></v-text-field
       ></v-card-title>
-      <v-btn width="fit-content" x-small @click="removeThisCard">-</v-btn>
+      <v-btn @click="removeThisCard" icon
+        ><v-icon>mdi-check-box-multiple-outline</v-icon></v-btn
+      >
     </v-card>
     <v-card class="d-flex flex-column cards" height="100%" width="270px" flat>
       <item v-for="(item, index) in todos" :key="index" :data="item" />
@@ -22,7 +25,12 @@
       type="text"
       placeholder="items..."
       v-model="data.content"
+      :error-messages="valid ? '' : 'Todo item existed!'"
+      ref="items"
+      autofocus
+      validate-on-blur
       @keyup.enter="addNewItem"
+      @input="valid = true"
     ></v-text-field>
   </v-card>
 </template>
@@ -54,14 +62,25 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      valid: true,
+      rules: {
+        required: (value) => !!value || "Required!",
+      },
+    };
   },
   methods: {
     addNewItem() {
-      let item = new itemTodo(this.data.content, "");
-      this.data.todos.push(item);
-      this.data.content = "";
-      this.$store.commit("saveData");
+      let contents = this.data.todos.map((todo) => todo.content);
+      if (!contents.includes(this.data.content)) {
+        let item = new itemTodo(this.data.content, "");
+        this.data.todos.push(item);
+        this.data.content = "";
+        this.$refs.items.resetValidation();
+        this.$store.commit("saveData");
+      } else {
+        this.valid = false;
+      }
     },
     removeThisCard() {
       let cards = this.$store.state.activeUser.cards;
@@ -80,5 +99,9 @@ export default {
 <style scoped>
 .cards {
   overflow: auto;
+}
+.input-title >>> input {
+  text-align: center;
+  text-transform: uppercase;
 }
 </style>

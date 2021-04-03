@@ -11,4 +11,12 @@ export default class User {
       return false;
     }
   }
+  checkCard(title) {
+    let titles = this.cards.map((card) => card.title);
+    if (!titles.includes(title)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

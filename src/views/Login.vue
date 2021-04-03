@@ -1,10 +1,15 @@
 <template>
-  <v-container class="d-flex align-center justify-center">
+  <v-card
+    class="d-flex align-center justify-center"
+    height="100vh"
+    color="grey lighten-1"
+  >
     <v-card
       class="d-flex align-center justify-space-around"
       elevation="7"
       width="700px"
       height="400px"
+      color="grey lighten-3"
     >
       <div class="text-h1 text-uppercase">Todo</div>
       <v-card
@@ -22,6 +27,7 @@
             @keyup.enter="loginBtn"
             :rules="[rules.required]"
             :error-messages="valid ? '' : 'Username or Password incorrect!'"
+            @input="valid = true"
           />
           <v-text-field
             v-model="password"
@@ -33,6 +39,7 @@
             hint="At least 8 characters"
             :rules="[rules.required, rules.min]"
             :error-messages="valid ? '' : 'Username or Password incorrect!'"
+            @input="valid = true"
             counter
             validate-on-blur
           />
@@ -43,7 +50,7 @@
         >
       </v-card>
     </v-card>
-  </v-container>
+  </v-card>
 </template>
 <script>
 export default {
@@ -90,3 +97,4 @@ export default {
   },
 };
 </script>
+<style scoped></style>

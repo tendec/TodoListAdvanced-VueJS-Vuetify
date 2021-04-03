@@ -22,6 +22,7 @@
             @keyup.enter="createBtn"
             :rules="[rules.required]"
             :error-messages="valid ? '' : 'Username existed!'"
+            @input="valid = true"
             @blur="checkUsername()"
           />
           <v-text-field
@@ -50,7 +51,6 @@
               rules.matching(password, cfpassword),
             ]"
             counter
-            ref="cfpassword"
             validate-on-blur
           />
         </v-form>
