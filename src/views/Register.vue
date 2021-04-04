@@ -1,7 +1,7 @@
 <template>
-  <v-container class="d-flex align-center justify-center" style="height: 100%">
+  <v-card class="d-flex align-center justify-center" height="100vh">
     <v-card
-      class="d-flex align-center justify-space-around"
+      class="d-flex align-center justify-space-around animate__animated animate__bounceIn animate__faster"
       elevation="7"
       width="700px"
       height="400px"
@@ -54,11 +54,15 @@
             validate-on-blur
           />
         </v-form>
-        <v-btn width="fit-content" @click="createBtn">Create</v-btn>
-        <v-btn width="fit-content" @click="backBtn">Back</v-btn>
+        <v-btn class="button" width="fit-content" @click="createBtn"
+          ><v-icon left x-small>fas fa-user-plus</v-icon>Create</v-btn
+        >
+        <v-btn class="button" width="fit-content" @click="backBtn"
+          ><v-icon left x-small>fas fa-arrow-left</v-icon>Back</v-btn
+        >
       </v-card>
     </v-card>
-  </v-container>
+  </v-card>
 </template>
 <script>
 import User from "../assets/class/user.js";

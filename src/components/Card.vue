@@ -11,12 +11,24 @@
           v-model="data.title"
           type="text"
           placeholder="title"
-          :rules="[rules.required]"
+          clearable
         ></v-text-field
       ></v-card-title>
-      <v-btn @click="removeThisCard" icon
-        ><v-icon>mdi-check-box-multiple-outline</v-icon></v-btn
-      >
+      <v-dialog v-model="dialog" persistent max-width="300px">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="button" icon v-bind="attrs" v-on="on"
+            ><v-icon small>fas fa-times</v-icon></v-btn
+          >
+        </template>
+        <v-card>
+          <v-card-title>Confirm remove this card?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="dialog = false">No</v-btn>
+            <v-btn @click="removeThisCard">Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
     <v-card class="d-flex flex-column cards" height="100%" width="270px" flat>
       <item v-for="(item, index) in todos" :key="index" :data="item" />
@@ -25,10 +37,9 @@
       type="text"
       placeholder="items..."
       v-model="data.content"
-      :error-messages="valid ? '' : 'Todo item existed!'"
+      :error-messages="valid ? '' : 'Todo item invalid!'"
       ref="items"
-      autofocus
-      validate-on-blur
+      clearable
       @keyup.enter="addNewItem"
       @input="valid = true"
     ></v-text-field>
@@ -63,6 +74,7 @@ export default {
   },
   data() {
     return {
+      dialog: false,
       valid: true,
       rules: {
         required: (value) => !!value || "Required!",
@@ -72,7 +84,7 @@ export default {
   methods: {
     addNewItem() {
       let contents = this.data.todos.map((todo) => todo.content);
-      if (!contents.includes(this.data.content)) {
+      if (!contents.includes(this.data.content) && this.data.content !== "") {
         let item = new itemTodo(this.data.content, "");
         this.data.todos.push(item);
         this.data.content = "";
@@ -98,7 +110,8 @@ export default {
 
 <style scoped>
 .cards {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .input-title >>> input {
   text-align: center;

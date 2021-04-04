@@ -44,16 +44,19 @@ export default new Vuex.Store({
     setActiveUser(state, user) {
       state.activeUser = user;
     },
-    addNewCard(state, title) {
-      if (state.activeUser.checkCard(title)) {
-        let card = new Card(title, []);
-        state.activeUser.cards.push(card);
-      }
-    },
     removeAllCards(state) {
       state.activeUser.cards.splice(0, state.activeUser.cards.length);
     },
   },
-  actions: {},
+  actions: {
+    addNewCard({ state }, title) {
+      if (!state.activeUser.checkCard(title)) {
+        return false;
+      }
+      let card = new Card(title, []);
+      state.activeUser.cards.push(card);
+      return true;
+    },
+  },
   modules: {},
 });

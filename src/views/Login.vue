@@ -5,7 +5,7 @@
     color="grey lighten-1"
   >
     <v-card
-      class="d-flex align-center justify-space-around"
+      class="d-flex align-center justify-space-around animate__animated animate__bounceIn animate__faster"
       elevation="7"
       width="700px"
       height="400px"
@@ -17,6 +17,7 @@
         flat
         width="300px"
         height="100%"
+        color="grey lighten-3"
       >
         <div class="text-h4 text-uppercase text-center">Login</div>
         <v-form ref="form">
@@ -44,9 +45,12 @@
             validate-on-blur
           />
         </v-form>
-        <v-btn width="fit-content" @click="loginBtn">Login</v-btn>
-        <v-btn width="fit-content" @click="registerBtn"
-          >Create New Account</v-btn
+        <v-btn class="button" width="fit-content" @click="loginBtn"
+          ><v-icon left small>fas fa-sign-in-alt</v-icon>Login</v-btn
+        >
+        <v-btn class="button" width="fit-content" @click="registerBtn"
+          ><v-icon left x-small>fas fa-user-plus</v-icon>Create New
+          Account</v-btn
         >
       </v-card>
     </v-card>
@@ -97,4 +101,3 @@ export default {
   },
 };
 </script>
-<style scoped></style>

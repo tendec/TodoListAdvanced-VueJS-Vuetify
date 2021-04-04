@@ -26,13 +26,12 @@
                 v-model="title"
                 type="text"
                 placeholder="title"
-                :error-messages="valid ? '' : 'Title card existed!'"
+                :error-messages="valid ? '' : 'Title card invalid!'"
                 @keyup.enter="addNewCard"
                 @input="valid = true"
+                clearable
               ></v-text-field>
-              <v-btn disabled icon
-                ><v-icon>mdi-check-box-multiple-outline</v-icon></v-btn
-              >
+              <v-btn disabled icon><v-icon x-small>fas fa-trash</v-icon></v-btn>
             </v-card-title>
             <v-card height="100%" width="270px" flat>
               <v-card-text
@@ -44,11 +43,31 @@
           </v-card>
         </v-card>
       </v-card>
-      <v-btn width="fit-content" @click="removeAllCards">-</v-btn>
+      <v-dialog v-model="dialog" persistent max-width="300px">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="button" v-bind="attrs" v-on="on"
+            ><v-icon small>fas fa-trash</v-icon></v-btn
+          >
+        </template>
+        <v-card>
+          <v-card-title>Confirm remove all cards?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="dialog = false">No</v-btn>
+            <v-btn
+              @click="
+                removeAllCards();
+                dialog = false;
+              "
+              >Yes</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-card class="d-flex flex-column align-center justify-space-around">
         <v-card>Username: {{ info }}</v-card>
         <v-btn class="button" width="fit-content" @click="logoutBtn"
-          >Logout</v-btn
+          ><v-icon left small>fas fa-sign-out-alt</v-icon>Logout</v-btn
         >
       </v-card>
     </v-card>
@@ -61,8 +80,8 @@ export default {
   data() {
     return {
       title: "",
+      dialog: false,
       valid: true,
-      info: this.$store.state.activeUser.username,
     };
   },
   components: {
@@ -72,12 +91,20 @@ export default {
     cards() {
       return this.$store.state.activeUser.cards;
     },
+    info() {
+      return this.$store.state.activeUser.username;
+    },
   },
   methods: {
     addNewCard() {
-      this.$store.commit("addNewCard", this.title);
-      this.title = "";
-      this.$store.commit("saveData");
+      const self = this;
+      this.$store.dispatch("addNewCard", this.title).then((r) => {
+        self.valid = r;
+        if (r == true) {
+          self.title = "";
+          self.$store.commit("saveData");
+        }
+      });
     },
     removeAllCards() {
       this.$store.commit("removeAllCards");
@@ -88,12 +115,7 @@ export default {
       this.$store.commit("saveData");
       this.$router.push({ name: "Login" });
     },
-  } /* 
-  watch: {
-    cards() {
-      this.valid = false;
-    },
-  }, */,
+  },
 };
 </script>
 
