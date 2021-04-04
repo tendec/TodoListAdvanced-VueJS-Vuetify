@@ -1,51 +1,82 @@
 <template>
-  <v-container class="d-flex align-center justify-center">
+  <v-card class="container" color="#ebebeb">
     <v-card
-      class="d-flex flex-column align-center justify-space-around cards"
-      min-height="600px"
+      class="d-flex flex-column align-center justify-center ui-container"
       flat
-    >
-      <div class="text-h4 text-capitalize text-center">Todos</div>
-      <v-card
-        class="d-flex flex-column align-center justify-space-around"
-        flat
-        width="100%"
-        height="fit-content"
-      >
-        <v-card class="d-flex flex-wrap" flat>
-          <card v-for="(card, index) in cards" :key="index" :data="card" />
-          <v-card
-            class="d-flex flex-column align-center justify-space-between ma-2"
-            width="300px"
-            height="350px"
-            elevation="1"
-          >
-            <v-card-title class="d-flex align-center" flat>
+      color="#ebebeb"
+      ><div class="text-capitalize text-center page-title ma-4">Todos</div>
+      <v-hover v-slot="{ hover }">
+        <v-card
+          class="d-flex flex-column align-center justify-space-around user-info"
+          flat
+        >
+          <v-card class="mb-2" flat>Username: {{ info }}</v-card>
+          <v-scroll-y-transition>
+            <v-btn
+              class="button"
+              width="fit-content"
+              @click="logoutBtn"
+              v-if="hover"
+              color="#fece2f"
+              ><v-icon left small>fas fa-sign-out-alt</v-icon>Logout</v-btn
+            >
+          </v-scroll-y-transition>
+        </v-card>
+      </v-hover>
+      <v-card class="d-flex flex-column align-center cards" height="70vh" flat>
+        <v-card
+          class="d-flex flex-column align-center justify-space-around"
+          flat
+          width="100%"
+          height="fit-content"
+        >
+          <v-card class="d-flex flex-wrap" flat>
+            <card v-for="(card, index) in cards" :key="index" :data="card" />
+            <v-card
+              class="d-flex flex-column align-center justify-space-between ma-3"
+              width="350px"
+              height="372px"
+              elevation="1"
+            >
+              <v-card-title class="d-flex align-center" flat>
+                <v-text-field
+                  class="input-title"
+                  v-model="title"
+                  type="text"
+                  placeholder="title"
+                  :error-messages="valid ? '' : 'Title card invalid!'"
+                  @keyup.enter="addNewCard"
+                  @input="valid = true"
+                  clearable
+                  color="#fece2f"
+                ></v-text-field>
+                <v-btn
+                  class="button btn-removeCard"
+                  icon
+                  disabled
+                  color="#fece2f"
+                  ><v-icon small>fas fa-times</v-icon></v-btn
+                >
+              </v-card-title>
+              <v-card height="100%" width="270px" flat>
+                <div
+                  class="text-center text-uppercase text--disabled sample-text"
+                >
+                  Sample
+                </div>
+              </v-card>
               <v-text-field
-                class="input-title"
-                v-model="title"
                 type="text"
-                placeholder="title"
-                :error-messages="valid ? '' : 'Title card invalid!'"
-                @keyup.enter="addNewCard"
-                @input="valid = true"
-                clearable
+                placeholder="items..."
+                disabled
               ></v-text-field>
-              <v-btn disabled icon><v-icon x-small>fas fa-trash</v-icon></v-btn>
-            </v-card-title>
-            <v-card height="100%" width="270px" flat>
-              <v-card-text
-                class="text-center text-h4 text-uppercase text--disabled"
-                >Sample</v-card-text
-              >
             </v-card>
-            <v-text-field type="text" placeholder="items..."></v-text-field>
           </v-card>
         </v-card>
       </v-card>
       <v-dialog v-model="dialog" persistent max-width="300px">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="button" v-bind="attrs" v-on="on"
+          <v-btn class="button mt-3" v-bind="attrs" v-on="on" color="#fece2f"
             ><v-icon small>fas fa-trash</v-icon></v-btn
           >
         </template>
@@ -64,14 +95,12 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-card class="d-flex flex-column align-center justify-space-around">
-        <v-card>Username: {{ info }}</v-card>
-        <v-btn class="button" width="fit-content" @click="logoutBtn"
-          ><v-icon left small>fas fa-sign-out-alt</v-icon>Logout</v-btn
-        >
-      </v-card>
     </v-card>
-  </v-container>
+    <div class="deco1"></div>
+    <div class="deco2"></div>
+    <div class="deco3"></div>
+    <div class="deco4"></div>
+  </v-card>
 </template>
 
 <script>
@@ -120,11 +149,97 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  overflow-y: hidden;
+  z-index: 0;
+}
 .cards {
   overflow: auto;
 }
 .input-title >>> input {
   text-align: center;
   text-transform: uppercase;
+}
+.user-info {
+  position: absolute;
+  top: 0;
+  right: 24px;
+}
+.btn-removeCard {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.sample-text {
+  font-family: "Train One", cursive;
+  font-size: 4em;
+  width: 300px;
+  transform: rotate(-30deg);
+  opacity: 0.2;
+  position: relative;
+  right: 24px;
+  top: 36px;
+}
+.container::before {
+  content: "";
+  width: 400px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: #fece2f;
+  position: absolute;
+  left: -25px;
+  top: -150px;
+  transform: rotate(100deg);
+}
+.container::after {
+  content: "";
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  background-color: #fece2f;
+  position: absolute;
+  right: -400px;
+  top: 60px;
+  z-index: 1;
+}
+.deco1 {
+  width: 400px;
+  height: 400px;
+  border-radius: 50% !important;
+  background-color: #ebebeb;
+  position: absolute;
+  right: 120px;
+  top: -20px;
+  z-index: 1;
+}
+.deco2 {
+  width: 200px;
+  height: 200px;
+  border-radius: 50% !important;
+  background-color: #fece2f;
+  position: absolute;
+  right: 36px;
+  top: 62px;
+  z-index: 1;
+}
+.deco3 {
+  width: 400px;
+  height: 600px;
+  border-radius: 50% !important;
+  background-color: #fece2f;
+  position: absolute;
+  right: 212px;
+  top: 210px;
+  z-index: 1;
+}
+.deco4 {
+  width: 300px;
+  height: 300px;
+  border-radius: 50% !important;
+  background-color: #ebebeb;
+  position: absolute;
+  right: 100px;
+  top: 169px;
+  z-index: 1;
 }
 </style>

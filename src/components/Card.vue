@@ -1,49 +1,70 @@
 <template>
-  <v-card
-    class="d-flex flex-column align-center justify-space-between ma-2"
-    width="300px"
-    height="350px"
-  >
-    <v-card class="d-flex align-center" flat>
-      <v-card-title
-        ><v-text-field
-          class="input-title"
-          v-model="data.title"
-          type="text"
-          placeholder="title"
-          clearable
-        ></v-text-field
-      ></v-card-title>
-      <v-dialog v-model="dialog" persistent max-width="300px">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn class="button" icon v-bind="attrs" v-on="on"
-            ><v-icon small>fas fa-times</v-icon></v-btn
-          >
-        </template>
-        <v-card>
-          <v-card-title>Confirm remove this card?</v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn @click="dialog = false">No</v-btn>
-            <v-btn @click="removeThisCard">Yes</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+  <v-hover v-slot="{ hover }">
+    <v-card
+      class="d-flex flex-column align-center ma-3"
+      width="350px"
+      height="372px"
+      hover
+      :class="data.done ? 'cardDone' : ''"
+    >
+      <v-card class="d-flex align-center" flat>
+        <v-card-title
+          ><v-text-field
+            class="input-title"
+            v-model="data.title"
+            type="text"
+            placeholder="title"
+            :clearable="hover"
+            color="#fece2f"
+          ></v-text-field
+        ></v-card-title>
+        <v-dialog v-model="dialog" persistent max-width="300px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-scroll-x-transition>
+              <v-btn
+                class="button btn-removeCard"
+                icon
+                v-bind="attrs"
+                v-on="on"
+                v-if="hover"
+                color="#fece2f"
+                ><v-icon small>fas fa-times</v-icon></v-btn
+              >
+            </v-scroll-x-transition>
+          </template>
+          <v-card>
+            <v-card-title>Confirm remove this card?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click="dialog = false">No</v-btn>
+              <v-btn @click="removeThisCard">Yes</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-card>
+      <v-card
+        class="d-flex flex-column items"
+        height="200px"
+        width="300px"
+        flat
+        :ripple="false"
+        @click="checkCard"
+      >
+        <item v-for="(item, index) in todos" :key="index" :data="item" />
+      </v-card>
+      <v-text-field
+        type="text"
+        placeholder="items..."
+        v-model="data.content"
+        :error-messages="valid ? '' : 'Todo item invalid!'"
+        ref="items"
+        clearable
+        @keyup.enter="addNewItem"
+        @input="valid = true"
+        color="#fece2f"
+      ></v-text-field>
     </v-card>
-    <v-card class="d-flex flex-column cards" height="100%" width="270px" flat>
-      <item v-for="(item, index) in todos" :key="index" :data="item" />
-    </v-card>
-    <v-text-field
-      type="text"
-      placeholder="items..."
-      v-model="data.content"
-      :error-messages="valid ? '' : 'Todo item invalid!'"
-      ref="items"
-      clearable
-      @keyup.enter="addNewItem"
-      @input="valid = true"
-    ></v-text-field>
-  </v-card>
+  </v-hover>
 </template>
 
 <script>
@@ -94,6 +115,18 @@ export default {
         this.valid = false;
       }
     },
+    checkCard() {
+      let dones = [];
+      for (let i = 0; i < this.todos.length; i++) {
+        dones.push(this.todos[i].done);
+      }
+      if (dones.includes(false)) {
+        this.data.done = false;
+      } else {
+        this.data.done = true;
+      }
+      this.$store.commit("saveData");
+    },
     removeThisCard() {
       let cards = this.$store.state.activeUser.cards;
       let code = this.data.code;
@@ -109,12 +142,20 @@ export default {
 </script>
 
 <style scoped>
-.cards {
+.items {
   overflow-x: hidden;
   overflow-y: auto;
 }
 .input-title >>> input {
   text-align: center;
   text-transform: uppercase;
+}
+.cardDone {
+  border: 3px solid #4caf50;
+}
+.btn-removeCard {
+  position: absolute;
+  top: 0;
+  right: -33px;
 }
 </style>

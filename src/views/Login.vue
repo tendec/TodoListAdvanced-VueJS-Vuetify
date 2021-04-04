@@ -1,25 +1,26 @@
 <template>
   <v-card
-    class="d-flex align-center justify-center"
+    class="d-flex align-center justify-center container"
     height="100vh"
-    color="grey lighten-1"
+    flat
+    color="#ebebeb"
   >
     <v-card
-      class="d-flex align-center justify-space-around animate__animated animate__bounceIn animate__faster"
+      class="d-flex align-center justify-space-around animate__animated animate__bounceIn animate__faster ui-container"
       elevation="7"
-      width="700px"
+      width="800px"
       height="400px"
-      color="grey lighten-3"
+      color="#f3f3f3"
     >
-      <div class="text-h1 text-uppercase">Todo</div>
+      <div class="text-uppercase todo-title">Todo</div>
       <v-card
-        class="d-flex flex-column align-center justify-space-around"
+        class="d-flex flex-column align-center justify-space-around ui-form"
         flat
         width="300px"
         height="100%"
-        color="grey lighten-3"
+        color="#f3f3f3"
       >
-        <div class="text-h4 text-uppercase text-center">Login</div>
+        <div class="text-uppercase text-center page-title">Login</div>
         <v-form ref="form">
           <v-text-field
             v-model="username"
@@ -29,6 +30,7 @@
             :rules="[rules.required]"
             :error-messages="valid ? '' : 'Username or Password incorrect!'"
             @input="valid = true"
+            color="#fece2f"
           />
           <v-text-field
             v-model="password"
@@ -43,17 +45,31 @@
             @input="valid = true"
             counter
             validate-on-blur
+            color="#fece2f"
           />
         </v-form>
-        <v-btn class="button" width="fit-content" @click="loginBtn"
+        <v-btn
+          class="button"
+          width="fit-content"
+          @click="loginBtn"
+          color="#fece2f"
+          small
           ><v-icon left small>fas fa-sign-in-alt</v-icon>Login</v-btn
         >
-        <v-btn class="button" width="fit-content" @click="registerBtn"
-          ><v-icon left x-small>fas fa-user-plus</v-icon>Create New
-          Account</v-btn
+        <v-btn
+          class="button"
+          width="fit-content"
+          @click="registerBtn"
+          color="#fece2f"
+          small
+          ><v-icon left x-small>fas fa-user-plus</v-icon>Create Account</v-btn
         >
       </v-card>
     </v-card>
+    <div class="deco1"></div>
+    <div class="deco2"></div>
+    <div class="deco3"></div>
+    <div class="deco4"></div>
   </v-card>
 </template>
 <script>
@@ -101,3 +117,73 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Lemonada&display=swap");
+.container {
+  overflow: hidden;
+  z-index: 0;
+}
+.container::before {
+  content: "";
+  width: 400px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: #fece2f;
+  position: absolute;
+  left: -25px;
+  top: -150px;
+  transform: rotate(100deg);
+}
+.container::after {
+  content: "";
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  background-color: #fece2f;
+  position: absolute;
+  right: -400px;
+  top: 60px;
+  z-index: -5;
+}
+.deco1 {
+  width: 400px;
+  height: 400px;
+  border-radius: 50% !important;
+  background-color: #ebebeb;
+  position: absolute;
+  right: 120px;
+  top: -20px;
+  z-index: -4;
+}
+.deco2 {
+  width: 200px;
+  height: 200px;
+  border-radius: 50% !important;
+  background-color: #fece2f;
+  position: absolute;
+  right: 36px;
+  top: 62px;
+  z-index: -3;
+}
+.deco3 {
+  width: 400px;
+  height: 600px;
+  border-radius: 50% !important;
+  background-color: #fece2f;
+  position: absolute;
+  right: 212px;
+  top: 210px;
+  z-index: -3;
+}
+.deco4 {
+  width: 300px;
+  height: 300px;
+  border-radius: 50% !important;
+  background-color: #ebebeb;
+  position: absolute;
+  right: 100px;
+  top: 169px;
+  z-index: -4;
+}
+</style>

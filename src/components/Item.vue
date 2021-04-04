@@ -1,6 +1,7 @@
 <template>
-  <v-card class="d-flex align-center todos" height="22%" flat>
+  <v-card class="d-flex align-center todos" height="21%" flat>
     <v-checkbox
+      class="ml-2 mt-5"
       on-icon="mdi-checkbox-marked-outline"
       v-model="data.done"
       :color="data.done ? 'success' : ''"
@@ -64,9 +65,7 @@ export default {
     },
   },
   data() {
-    return {
-      done: false,
-    };
+    return {};
   },
   computed: {
     color() {
@@ -80,15 +79,11 @@ export default {
     },
     removeItem() {
       let cards = this.$store.state.activeUser.cards;
-      let todos = [];
-      for (let i = 0; i < cards.length; i++) {
-        todos.push(cards[i]);
-      }
       let code = this.data.code;
-      for (let i = 0; i < todos.length; i++) {
-        for (let j = 0; j < todos[i].todos.length; j++) {
-          if (todos[i].todos[j].code == code) {
-            todos[i].todos.splice(j, 1);
+      for (let i = 0; i < cards.length; i++) {
+        for (let j = 0; j < cards[i].todos.length; j++) {
+          if (cards[i].todos[j].code == code) {
+            cards[i].todos.splice(j, 1);
             this.$store.commit("saveData");
           }
         }

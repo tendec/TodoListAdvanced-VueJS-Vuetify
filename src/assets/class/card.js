@@ -3,5 +3,6 @@ export default class Card {
     this.title = title;
     this.todos = todos;
     this.code = Math.random();
+    this.done = false;
   }
 }
