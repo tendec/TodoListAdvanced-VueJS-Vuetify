@@ -3,7 +3,7 @@
     class="d-flex align-center todos item"
     height="21%"
     flat
-    color="#f3f3f3"
+    color="#0000"
     :class="data.remove ? 'removeItem' : ''"
   >
     <v-checkbox
@@ -13,17 +13,14 @@
       :color="data.done ? 'success' : ''"
       @click="checkItem"
       ><template v-slot:label
-        ><v-card
-          :class="data.done ? 'success--text' : ''"
-          flat
-          color="#f3f3f3"
-          >{{ data.content }}</v-card
-        ></template
+        ><v-card :class="data.done ? 'success--text' : ''" flat color="#0000">{{
+          data.content
+        }}</v-card></template
       ></v-checkbox
     >
     <v-menu offset-x absolute close-on-click close-on-content-click
       ><template v-slot:activator="{ on, attrs }"
-        ><v-btn class="button" small icon v-bind="attrs" v-on="on"
+        ><v-btn class="button ml-5" small icon v-bind="attrs" v-on="on"
           ><v-icon small :color="color">mdi-flag</v-icon></v-btn
         ></template
       ><v-list

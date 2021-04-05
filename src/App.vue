@@ -50,9 +50,13 @@ export default {
 }
 .page-title {
   font-size: 2em;
+  z-index: 7;
 }
 .page-title:hover {
   animation: tada 0.5s;
+}
+.button {
+  z-index: 7;
 }
 .button:hover {
   animation: rubberBand 0.5s;

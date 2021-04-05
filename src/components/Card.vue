@@ -5,9 +5,9 @@
       width="350px"
       height="372px"
       :class="[data.done ? 'cardDone' : '', data.remove ? 'removeCard' : '']"
-      color="#f3f3f3"
+      color="#0000"
     >
-      <v-card class="d-flex align-center" flat color="#f3f3f3">
+      <v-card class="d-flex align-center" flat color="#0000">
         <v-card-title
           ><v-text-field
             class="input-title"
@@ -49,7 +49,7 @@
           </v-card>
         </v-dialog>
       </v-card>
-      <v-card
+      <div
         class="d-flex flex-column items"
         height="200px"
         width="300px"
@@ -58,8 +58,8 @@
         color="#f3f3f3"
         @click="checkCard"
       >
-        <item v-for="(item, index) in todos" :key="index" :data="item" />
-      </v-card>
+        <item v-for="item in todos" :key="item.content" :data="item" />
+      </div>
       <v-text-field
         type="text"
         placeholder="items..."
@@ -156,6 +156,8 @@ export default {
 .items {
   overflow-x: hidden;
   overflow-y: auto;
+  width: 300px;
+  height: 300px;
 }
 .input-title >>> input {
   text-align: center;
@@ -163,10 +165,16 @@ export default {
 }
 .card {
   animation: flipInX 0.7s;
+  background-image: linear-gradient(
+    to top right,
+    #fefefe,
+    #fece2fa2
+  ) !important;
+  backdrop-filter: blur(10px);
 }
 .cardDone {
-  border: 3px solid #4caf50 !important;
-  transition: border 0.3s;
+  border: 5px solid #4caf50 !important;
+  transition: border 0.1s;
 }
 .btn-removeCard {
   position: absolute;

@@ -1,6 +1,7 @@
 <template>
   <v-card
     class="d-flex align-center justify-center container"
+    max-width="100vw"
     height="100vh"
     flat
     color="#ebebeb"
@@ -10,7 +11,7 @@
       elevation="7"
       width="800px"
       height="400px"
-      color="#f3f3f3"
+      color="#0000"
     >
       <div class="text-uppercase todo-title">Todo</div>
       <v-card
@@ -18,7 +19,7 @@
         flat
         width="300px"
         height="100%"
-        color="#f3f3f3"
+        color="#0000"
       >
         <div class="text-uppercase text-center page-title">Login</div>
         <v-form ref="form">
@@ -123,6 +124,19 @@ export default {
 .container {
   overflow: hidden;
   z-index: 0;
+  background-image: linear-gradient(
+    to bottom left,
+    #fefefe,
+    #fece2fbe
+  ) !important;
+}
+.ui-container {
+  background-image: linear-gradient(
+    to top right,
+    #fefefe,
+    #fece2fbe
+  ) !important;
+  backdrop-filter: blur(10px);
 }
 .container::before {
   content: "";
@@ -150,11 +164,13 @@ export default {
   width: 400px;
   height: 400px;
   border-radius: 50% !important;
+  box-shadow: -5px -5px 5px 5px #ffffff24;
   background-color: #ebebeb;
   position: absolute;
-  right: 120px;
-  top: -20px;
+  right: 112px;
+  top: -12px;
   z-index: -4;
+  background-image: linear-gradient(to bottom, #fefefe, #fece2fbe) !important;
 }
 .deco2 {
   width: 200px;
@@ -180,10 +196,16 @@ export default {
   width: 300px;
   height: 300px;
   border-radius: 50% !important;
+  box-shadow: -5px -5px 5px 5px #ffffff54;
   background-color: #ebebeb;
   position: absolute;
   right: 100px;
   top: 169px;
   z-index: -4;
+  background-image: linear-gradient(
+    to bottom left,
+    #fefefe,
+    #fece2fbe
+  ) !important;
 }
 </style>
