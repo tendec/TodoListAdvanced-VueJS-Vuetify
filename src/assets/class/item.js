@@ -4,5 +4,6 @@ export default class itemTodo {
     this.priority = priority;
     this.code = Math.random();
     this.done = false;
+    this.remove = false;
   }
 }

@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <v-main class="d-flex align-center justify-center main"
-      ><router-view
-    /></v-main>
+    <v-main><router-view /></v-main>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -29,9 +27,6 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Train+One&display=swap");
-.main {
-  overflow: hidden;
-}
 .ui-container {
   font-family: "Lemonada", cursive;
   overflow: hidden;
@@ -43,6 +38,10 @@ export default {
   opacity: 0.1;
   position: relative;
   right: 24px;
+  transition: font-size 0.5s;
+}
+.todo-title:hover {
+  font-size: 10em;
 }
 .ui-form {
   position: relative;
@@ -51,6 +50,9 @@ export default {
 }
 .page-title {
   font-size: 2em;
+}
+.page-title:hover {
+  animation: tada 0.5s;
 }
 .button:hover {
   animation: rubberBand 0.5s;

@@ -4,5 +4,6 @@ export default class Card {
     this.todos = todos;
     this.code = Math.random();
     this.done = false;
+    this.remove = false;
   }
 }

@@ -1,19 +1,22 @@
 <template>
-  <v-card class="container" color="#ebebeb">
+  <v-card class="container" height="100vh" flat color="#ebebeb">
     <v-card
       class="d-flex flex-column align-center justify-center ui-container"
       flat
       color="#ebebeb"
-      ><div class="text-capitalize text-center page-title ma-4">Todos</div>
+      ><div class="text-capitalize text-center page-title ma-4 mb-7">Todos</div>
       <v-hover v-slot="{ hover }">
         <v-card
           class="d-flex flex-column align-center justify-space-around user-info"
           flat
+          color="#f3f3f3"
         >
-          <v-card class="mb-2" flat>Username: {{ info }}</v-card>
+          <v-card class="ma-2" flat color="#f3f3f3"
+            >Username: {{ info }}</v-card
+          >
           <v-scroll-y-transition>
             <v-btn
-              class="button"
+              class="button mb-2"
               width="fit-content"
               @click="logoutBtn"
               v-if="hover"
@@ -23,33 +26,45 @@
           </v-scroll-y-transition>
         </v-card>
       </v-hover>
-      <v-card class="d-flex flex-column align-center cards" height="70vh" flat>
+      <v-card
+        class="d-flex flex-column align-center cards mb-3"
+        max-width="84vw"
+        max-height="70vh"
+      >
         <v-card
           class="d-flex flex-column align-center justify-space-around"
           flat
           width="100%"
           height="fit-content"
         >
-          <v-card class="d-flex flex-wrap" flat>
+          <v-card class="d-flex flex-wrap" flat color="#ebebeb">
             <card v-for="(card, index) in cards" :key="index" :data="card" />
             <v-card
               class="d-flex flex-column align-center justify-space-between ma-3"
               width="350px"
               height="372px"
               elevation="1"
+              color="#f3f3f3"
             >
               <v-card-title class="d-flex align-center" flat>
-                <v-text-field
-                  class="input-title"
-                  v-model="title"
-                  type="text"
-                  placeholder="title"
-                  :error-messages="valid ? '' : 'Title card invalid!'"
-                  @keyup.enter="addNewCard"
-                  @input="valid = true"
-                  clearable
-                  color="#fece2f"
-                ></v-text-field>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      class="input-title"
+                      v-model="title"
+                      v-bind="attrs"
+                      v-on="on"
+                      type="text"
+                      placeholder="title"
+                      :error-messages="valid ? '' : 'Title card invalid!'"
+                      @keyup.enter="addNewCard"
+                      @input="valid = true"
+                      clearable
+                      color="#fece2f"
+                    ></v-text-field>
+                  </template>
+                  <span>Type new title to add new card</span>
+                </v-tooltip>
                 <v-btn
                   class="button btn-removeCard"
                   icon
@@ -58,7 +73,7 @@
                   ><v-icon small>fas fa-times</v-icon></v-btn
                 >
               </v-card-title>
-              <v-card height="100%" width="270px" flat>
+              <v-card height="100%" width="270px" flat color="#f3f3f3">
                 <div
                   class="text-center text-uppercase text--disabled sample-text"
                 >
@@ -84,12 +99,13 @@
           <v-card-title>Confirm remove all cards?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="dialog = false">No</v-btn>
+            <v-btn @click="dialog = false" color="#fece2f">No</v-btn>
             <v-btn
               @click="
                 removeAllCards();
                 dialog = false;
               "
+              color="#fece2f"
               >Yes</v-btn
             >
           </v-card-actions>
@@ -150,11 +166,12 @@ export default {
 
 <style scoped>
 .container {
-  overflow-y: hidden;
-  z-index: 0;
+  overflow: hidden;
+  max-width: 100vw;
 }
 .cards {
   overflow: auto;
+  z-index: 5;
 }
 .input-title >>> input {
   text-align: center;
@@ -164,6 +181,7 @@ export default {
   position: absolute;
   top: 0;
   right: 24px;
+  z-index: 5;
 }
 .btn-removeCard {
   position: absolute;
@@ -190,6 +208,7 @@ export default {
   left: -25px;
   top: -150px;
   transform: rotate(100deg);
+  z-index: 1;
 }
 .container::after {
   content: "";
@@ -210,7 +229,7 @@ export default {
   position: absolute;
   right: 120px;
   top: -20px;
-  z-index: 1;
+  z-index: 2;
 }
 .deco2 {
   width: 200px;
@@ -220,7 +239,7 @@ export default {
   position: absolute;
   right: 36px;
   top: 62px;
-  z-index: 1;
+  z-index: 3;
 }
 .deco3 {
   width: 400px;
@@ -230,7 +249,7 @@ export default {
   position: absolute;
   right: 212px;
   top: 210px;
-  z-index: 1;
+  z-index: 4;
 }
 .deco4 {
   width: 300px;

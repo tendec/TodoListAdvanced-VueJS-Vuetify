@@ -1,13 +1,13 @@
 <template>
   <v-hover v-slot="{ hover }">
     <v-card
-      class="d-flex flex-column align-center ma-3"
+      class="d-flex flex-column align-center ma-3 card"
       width="350px"
       height="372px"
-      hover
-      :class="data.done ? 'cardDone' : ''"
+      :class="[data.done ? 'cardDone' : '', data.remove ? 'removeCard' : '']"
+      color="#f3f3f3"
     >
-      <v-card class="d-flex align-center" flat>
+      <v-card class="d-flex align-center" flat color="#f3f3f3">
         <v-card-title
           ><v-text-field
             class="input-title"
@@ -36,8 +36,15 @@
             <v-card-title>Confirm remove this card?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="dialog = false">No</v-btn>
-              <v-btn @click="removeThisCard">Yes</v-btn>
+              <v-btn @click="dialog = false" color="#fece2f">No</v-btn>
+              <v-btn
+                @click="
+                  removeThisCard();
+                  dialog = false;
+                "
+                color="#fece2f"
+                >Yes</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -48,6 +55,7 @@
         width="300px"
         flat
         :ripple="false"
+        color="#f3f3f3"
         @click="checkCard"
       >
         <item v-for="(item, index) in todos" :key="index" :data="item" />
@@ -132,8 +140,11 @@ export default {
       let code = this.data.code;
       for (let i = 0; i < cards.length; i++) {
         if (cards[i].code == code) {
-          cards.splice(i, 1);
-          this.$store.commit("saveData");
+          cards[i].remove = true;
+          setTimeout(() => {
+            cards.splice(i, 1);
+            this.$store.commit("saveData");
+          }, 500);
         }
       }
     },
@@ -150,12 +161,19 @@ export default {
   text-align: center;
   text-transform: uppercase;
 }
+.card {
+  animation: flipInX 0.7s;
+}
 .cardDone {
-  border: 3px solid #4caf50;
+  border: 3px solid #4caf50 !important;
+  transition: border 0.3s;
 }
 .btn-removeCard {
   position: absolute;
   top: 0;
   right: -33px;
+}
+.removeCard {
+  animation: flipOutX 0.5s;
 }
 </style>
